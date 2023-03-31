@@ -1,0 +1,87 @@
+
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+
+.status-container{
+  text-align: center;
+}
+
+.status{
+  white-space: nowrap;
+  padding: 5px 10px;
+  border-radius: 5px;
+  letter-spacing: 0.1em;
+}
+
+.in-progress {
+  background-color: #ffd6a5;
+}
+
+.waiting-for {
+  background-color: #fdffb6;
+}
+
+.cancelled {
+  background-color: #757575;
+  color: white;
+}
+
+.resolved {
+  background-color: #caffbf;
+}
+
+.deployed {
+  background-color: #ffd6a5;
+}
+
+.qualified {
+  background-color: #e9edc9;
+}
+
+.accepted {
+  background-color: #deaaff;
+}
+
+.screening {
+  background-color: #c8e7ff;
+}
+
+.validated {
+  background: #ffc6ff;
+}
+
+.acceptance-test {
+  background: #fcd5ce;
+}
+
+.to-be-reworked {
+  background: #f8ad9d;
+}
+
+.draft {
+  background-color: #757575;
+  color: white;
+}
+
+.submitted {
+  background-color: #9bf6ff;
+}
+
+.closed {
+  background-color: #caffbf;
+}
+
+.yes {
+  background-color: #ffadad;
+}
+
+.no {
+  background-color: #caffbf;
+}
