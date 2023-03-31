@@ -19,12 +19,19 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AddEditModalComponent } from './ticket/add-edit-modal/add-edit-modal.component';
+import {MatSelectModule} from '@angular/material/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     IncidentComponent,
     LoginComponent,
+    AddEditModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +49,11 @@ import {MatChipsModule} from '@angular/material/chips';
     MatMenuModule,
     MatSnackBarModule,
     ClipboardModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

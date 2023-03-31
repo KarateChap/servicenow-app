@@ -16,6 +16,7 @@
         mat-fab
         color="primary"
         aria-label="Example icon button with a delete icon"
+        (click)="addNewTicket()"
       >
         <mat-icon>add</mat-icon>
       </button>
@@ -66,7 +67,7 @@
               [matMenuTriggerFor]="status"
               class="status cursor-pointer"
               [ngClass]="{
-                'in-progress': row.status === 'In-Progress',
+                'in-progress': row.status === 'In Progress',
                 'waiting-for': row.status === 'Waiting For',
                 cancelled: row.status === 'Cancelled',
                 resolved: row.status === 'Resolved',
@@ -84,8 +85,8 @@
               >{{ row.status }}</span
             >
             <mat-menu #status="matMenu">
-              <button mat-menu-item (click)="onStatusChanged(row.id, 'In-Progress')">
-                In-Progress
+              <button mat-menu-item (click)="onStatusChanged(row.id, 'In Progress')">
+                In Progress
               </button>
               <button mat-menu-item (click)="onStatusChanged(row.id, 'Waiting For')">
                 Waiting For
@@ -164,6 +165,11 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ACTIONS</th>
           <td mat-cell *matCellDef="let row;">
             <div class="flex items-center justify-center">
+              <mat-icon
+              class="cursor-pointer hover:text-green-600 scale-[90%] hover:scale-[110%] transition ease-in-out"
+              (click)="onEdit(row)"
+              >edit</mat-icon
+            >
               <mat-icon
                 class="cursor-pointer hover:text-red-600 scale-[90%] hover:scale-[110%] transition ease-in-out"
                 (click)="onDelete(row.id)"

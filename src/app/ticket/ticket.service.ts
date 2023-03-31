@@ -7,7 +7,7 @@ import { Ticket } from './ticket.model';
 })
 export class TicketService {
   ticketChanged: Subject<Ticket[]> = new Subject();
-  ticketDeleted: Subject<Ticket[]> = new Subject();
+  ticketAddOrDeleted: Subject<Ticket[]> = new Subject();
   tickets: Ticket[] = [
     {
       id: 'INC0128231',
@@ -15,7 +15,7 @@ export class TicketService {
       isIt: 'Zycus',
       impact: 'Low',
       shortDescription: 'PU TS User ID Creation',
-      status: 'In-Progress',
+      status: 'In Progress',
       isUsed: 'No',
     },
     {
@@ -30,7 +30,7 @@ export class TicketService {
     {
       id: 'INC0128252',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'To Be Reworked',
@@ -39,7 +39,7 @@ export class TicketService {
     {
       id: 'INC0128253',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Resolved',
@@ -48,7 +48,7 @@ export class TicketService {
     {
       id: 'INC0128254',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Draft',
@@ -57,7 +57,7 @@ export class TicketService {
     {
       id: 'INC0128255',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Closed',
@@ -66,7 +66,7 @@ export class TicketService {
     {
       id: 'INC0128256',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Submitted',
@@ -75,7 +75,7 @@ export class TicketService {
     {
       id: 'INC0128257',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Resolved',
@@ -84,7 +84,7 @@ export class TicketService {
     {
       id: 'INC0128258',
       type: 'ENHANCEMENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Draft',
@@ -93,7 +93,7 @@ export class TicketService {
     {
       id: 'INC0128259',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Closed',
@@ -102,7 +102,7 @@ export class TicketService {
     {
       id: 'INC0128210',
       type: 'ENHANCEMENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Submitted',
@@ -111,7 +111,7 @@ export class TicketService {
     {
       id: 'INC0128211',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Resolved',
@@ -120,7 +120,7 @@ export class TicketService {
     {
       id: 'INC0128212',
       type: 'ENHANCEMENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Draft',
@@ -129,7 +129,7 @@ export class TicketService {
     {
       id: 'INC0128213',
       type: 'INCIDENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Closed',
@@ -138,7 +138,7 @@ export class TicketService {
     {
       id: 'INC0128214',
       type: 'ENHANCEMENT',
-      isIt: 'SAP Themis',
+      isIt: 'Sap Themis',
       impact: 'High',
       shortDescription: 'Create Purchase Order',
       status: 'Submitted',
@@ -165,11 +165,24 @@ export class TicketService {
     this.ticketChanged.next(this.tickets);
   }
 
+  addNewTicket(newTicket: Ticket){
+    this.tickets.push(newTicket);
+    this.ticketChanged.next(this.tickets);
+  }
+
+  editTicket(ticket: Ticket){
+    const index = this.tickets.findIndex(item => item.id === ticket.id);
+    if(index !== -1){
+      this.tickets[index] = ticket;
+      this.ticketChanged.next(this.tickets);
+    }
+  }
+
   deleteTicket(id: string){
     const index = this.tickets.findIndex(item => item.id === id);
     if(index !== -1){
       this.tickets.splice(index, 1);
-      this.ticketDeleted.next(this.tickets);
+      this.ticketChanged.next(this.tickets);
     }
   }
 }

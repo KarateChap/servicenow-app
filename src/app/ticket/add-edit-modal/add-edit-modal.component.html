@@ -1,0 +1,82 @@
+<div class="flex p-10 flex-col">
+  <p class="mb-4 font-bold">{{data.isEdit ? ('EDIT TICKET: ' + data.id) : 'ADD TICKET'}}</p>
+
+  <form class="flex flex-col" [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+
+    <div class="flex gap-5">
+      <mat-form-field appearance="fill">
+        <mat-label for="id">Ticket Number</mat-label>
+        <input matInput type="text" id="id" formControlName="id">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="type">Type</mat-label>
+        <mat-select id="type" formControlName="type">
+          <mat-option value="incident">Incident</mat-option>
+          <mat-option value="enhancement">Enhancement</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-5">
+      <mat-form-field appearance="fill">
+        <mat-label for="isIt">IS/IT</mat-label>
+        <mat-select id="isIt" formControlName="isIt">
+          <mat-option value="zycus">Zycus</mat-option>
+          <mat-option value="coupa">Coupa</mat-option>
+          <mat-option value="sapThemis">SAP Themis</mat-option>
+          <mat-option value="probuyer">Probuyer</mat-option>
+          <mat-option value="tradeshift">Tradeshift</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="impact">Impact</mat-label>
+        <mat-select id="impact" formControlName="impact">
+          <mat-option value="low">Low</mat-option>
+          <mat-option value="medium">Medium</mat-option>
+          <mat-option value="high">High</mat-option>
+          <mat-option value="top">Top</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="shortDescription">Short Description</mat-label>
+        <textarea matInput if="shortDescription" formControlName="shortDescription"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-5">
+      <mat-form-field appearance="fill">
+        <mat-label for="status">Status</mat-label>
+        <mat-select id="status" formControlName="status">
+          <mat-option value="inProgress">In Progress</mat-option>
+          <mat-option value="waitingFor">Waiting For</mat-option>
+          <mat-option value="cancelled">Cancelled</mat-option>
+          <mat-option value="resolved">Resolved</mat-option>
+          <mat-option value="draft">Draft</mat-option>
+          <mat-option value="deployed">Deployed</mat-option>
+          <mat-option value="qualified">Qualified</mat-option>
+          <mat-option value="acceptanceTest">Acceptance Test</mat-option>
+          <mat-option value="toBeReworked">To Be Reworked</mat-option>
+          <mat-option value="accepted">Accepted</mat-option>
+          <mat-option value="screening">Screening</mat-option>
+          <mat-option value="validated">Validated</mat-option>
+          <mat-option value="closed">Closed</mat-option>
+          <mat-option value="submitted">Submitted</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="isUsed">Is Used</mat-label>
+        <mat-select id="isUsed" formControlName="isUsed">
+          <mat-option value="yes">Yes</mat-option>
+          <mat-option value="no">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-center items-center">
+      <button mat-raised-button color="primary" [disabled]="!ticketForm.valid">{{data.isEdit? 'Edit Ticket' : 'Add Ticket'}}</button>
+    </div>
+  </form>
+</div>

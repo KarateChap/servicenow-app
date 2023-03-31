@@ -1,9 +1,11 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription } from 'rxjs';
+import { AddEditModalComponent } from './add-edit-modal/add-edit-modal.component';
 // import { SelectionModel } from '@angular/cdk/collections';
 import { Ticket } from './ticket.model';
 import { TicketService } from './ticket.service';
@@ -17,7 +19,6 @@ const NAMES: string[] = [];
 })
 export class IncidentComponent implements OnInit, OnDestroy {
   ticketSubs = new Subscription();
-  ticketDeletedSubs = new Subscription();
   tickets: Ticket[] = [];
   displayedColumns: string[] = [
     'id',
@@ -35,37 +36,10 @@ export class IncidentComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  // /** Whether the number of selected elements matches the total number of rows. */
-  // isAllSelected() {
-  //   const numSelected = this.selection.selected.length;
-  //   const numRows = this.dataSource.data.length;
-  //   return numSelected === numRows;
-  // }
-
-  // /** Selects all rows if they are not all selected; otherwise clear selection. */
-  // toggleAllRows() {
-  //   if (this.isAllSelected()) {
-  //     this.selection.clear();
-  //     return;
-  //   }
-
-  //   this.selection.select(...this.dataSource.data);
-  // }
-
-  // /** The label for the checkbox on the passed row */
-  // checkboxLabel(row?: Ticket): string {
-  //   console.log(row?.id);
-  //   if (!row) {
-  //     return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-  //   }
-  //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
-  //     row.id + 1
-  //   }`;
-  // }
-
   constructor(
     private ticketService: TicketService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private matDialog: MatDialog
   ) {
     this.tickets = this.ticketService.allTickets;
     this.dataSource = new MatTableDataSource(this.tickets);
@@ -73,12 +47,6 @@ export class IncidentComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.ticketSubs = this.ticketService.ticketChanged.subscribe(
-      (newTickets) => {
-        this.tickets = newTickets;
-      }
-    );
-
-    this.ticketDeletedSubs = this.ticketService.ticketDeleted.subscribe(
       (newTickets) => {
         this.tickets = newTickets;
         this.dataSource = new MatTableDataSource(this.tickets);
@@ -135,6 +103,28 @@ export class IncidentComponent implements OnInit, OnDestroy {
     this.ticketService.changeStatus(id, status);
   }
 
+  addNewTicket(){
+    this.matDialog.open(AddEditModalComponent, {
+      data: {
+        isEdit: false
+      }
+    });
+  }
+  onEdit(row: Ticket){
+    this.matDialog.open(AddEditModalComponent, {
+      data: {
+        isEdit: true,
+        id: row.id,
+        type: row.type,
+        isIt: row.isIt,
+        impact: row.impact,
+        shortDescription: row.shortDescription,
+        status: row.status,
+        isUsed: row.isUsed
+      }
+    })
+  }
+
   onDelete(id: string) {
     this.snackBar.open(
       'Ticket Number: ' + id + ' has been deleted',
@@ -154,6 +144,5 @@ export class IncidentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.ticketSubs.unsubscribe();
-    this.ticketDeletedSubs.unsubscribe();
   }
 }
