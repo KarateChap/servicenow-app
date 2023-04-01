@@ -93,6 +93,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "service-now-app:build:production",
+            "firebaseProject": "work-apps-c2809",
+            "firebaseHostingSite": "work-apps-c2809"
+          }
         }
       }
     }

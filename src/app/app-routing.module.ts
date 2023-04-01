@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IncidentComponent } from './ticket/ticket.component';
+import { TicketComponent } from './ticket/ticket.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './login/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'tickets', pathMatch: 'full' },
-  { path: 'tickets', component: IncidentComponent },
-  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'tickets', component: TicketComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent},
   { path: '**', redirectTo: 'login' },
 ];
 

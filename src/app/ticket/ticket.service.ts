@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Ticket } from './ticket.model';
+import { ApiService } from '../sservices/api.service';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { Firestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +11,8 @@ import { Ticket } from './ticket.model';
 export class TicketService {
   ticketChanged: Subject<Ticket[]> = new Subject();
   ticketAddOrDeleted: Subject<Ticket[]> = new Subject();
-  tickets: Ticket[] = [
+  public userTickets: Observable<any>;
+  public tickets: Ticket[] = [
     {
       id: 'INC0128231',
       type: 'INCIDENT',
@@ -71,7 +75,7 @@ export class TicketService {
     },
   ];
 
-  constructor() {}
+  constructor(private apiService: ApiService, private firestore: Firestore) {}
 
   get allTickets() {
     return [...this.tickets];
@@ -89,9 +93,11 @@ export class TicketService {
     this.ticketChanged.next(this.tickets);
   }
 
-  addNewTicket(newTicket: Ticket) {
-    this.tickets.push(newTicket);
-    this.ticketChanged.next(this.tickets);
+  addNewTicket(newTicket: Ticket, userId) {
+    // let ticketWithId = { userId: userId, ...newTicket };
+    // this.tickets.push(newTicket);
+    // this.ticketChanged.next(this.tickets);
+    this.apiService.addDocument(`tickets/${userId}/data`, newTicket);
   }
 
   editTicket(ticket: Ticket) {

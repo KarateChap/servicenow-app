@@ -13,13 +13,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AddEditModalComponent {
   ticketForm: FormGroup;
 
-
-
   constructor(
     private ticketService: TicketService,
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<AddEditModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data
+
   ) {
     if (!data.isEdit) {
 
@@ -103,7 +102,7 @@ export class AddEditModalComponent {
           this.ticketForm.value.isUsed.slice(1),
       };
 
-      this.ticketService.addNewTicket(newTicket);
+      this.ticketService.addNewTicket(newTicket, this.data.userId);
 
       this.snackBar.open(
         'Ticket Number: ' + newTicket.id + ' has been added.',

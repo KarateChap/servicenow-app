@@ -4,12 +4,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AddEditModalComponent } from './add-edit-modal/add-edit-modal.component';
 // import { SelectionModel } from '@angular/cdk/collections';
 import { Ticket } from './ticket.model';
 import { TicketService } from './ticket.service';
 import { DisplayModalComponent } from './display-modal/display-modal.component';
+import { ApiService } from '../sservices/api.service';
+import { AuthService } from '../login/auth.service';
 
 const NAMES: string[] = [];
 
@@ -18,9 +20,11 @@ const NAMES: string[] = [];
   templateUrl: './ticket.component.html',
   styleUrls: ['./ticket.component.css'],
 })
-export class IncidentComponent implements OnInit, OnDestroy {
+export class TicketComponent implements OnInit, OnDestroy {
+  userId = '';
   ticketSubs = new Subscription();
   tickets: Ticket[] = [];
+  userTickets: Observable<any[]>;
   displayedColumns: string[] = [
     'id',
     'type',
@@ -48,7 +52,9 @@ export class IncidentComponent implements OnInit, OnDestroy {
   constructor(
     private ticketService: TicketService,
     private snackBar: MatSnackBar,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private apiService: ApiService,
+    private authService: AuthService
   ) {
     this.tickets = this.ticketService.allTickets;
     this.dataSource = new MatTableDataSource(this.tickets);
@@ -61,6 +67,13 @@ export class IncidentComponent implements OnInit, OnDestroy {
         this.dataSource = new MatTableDataSource(this.tickets);
       }
     );
+
+    this.authService.checkAuth().then((user) => {
+      this.userId = user.uid;
+    });
+
+
+
   }
 
   ngAfterViewInit() {
@@ -77,14 +90,13 @@ export class IncidentComponent implements OnInit, OnDestroy {
     }
   }
 
-  filterTicket(type: string){
+  filterTicket(type: string) {
     this.dataSource.filter = type.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
-
 
   onIsUsedChanged(id: string, isUsed: string) {
     this.snackBar.open(
@@ -112,16 +124,18 @@ export class IncidentComponent implements OnInit, OnDestroy {
     this.ticketService.changeStatus(id, status);
   }
 
-  addNewTicket(){
+  addNewTicket() {
     this.matDialog.open(AddEditModalComponent, {
       data: {
-        isEdit: false
-      }
+        isEdit: false,
+        userId: this.userId
+      },
     });
   }
-  onEdit(row: Ticket){
+  onEdit(row: Ticket) {
     this.matDialog.open(AddEditModalComponent, {
       data: {
+        userId: this.userId,
         isEdit: true,
         id: row.id,
         type: row.type,
@@ -136,16 +150,14 @@ export class IncidentComponent implements OnInit, OnDestroy {
         status: row.status,
         workingHours: row.workingHours,
         isUsed: row.isUsed,
-      }
-    })
+      },
+    });
   }
 
   onDelete(id: string) {
-    this.snackBar.open(
-      'Ticket Number: ' + id + ' has been deleted',
-      'close',
-      { duration: 3000 }
-    );
+    this.snackBar.open('Ticket Number: ' + id + ' has been deleted', 'close', {
+      duration: 3000,
+    });
     this.ticketService.deleteTicket(id);
   }
 
@@ -156,35 +168,37 @@ export class IncidentComponent implements OnInit, OnDestroy {
       { duration: 3000 }
     );
 
-      this.matDialog.open(DisplayModalComponent, {
-        data: {
-          id: ticket.id,
-          type: ticket.type,
-          dateReceived: ticket.dateReceived,
-          dateResolved: ticket.dateResolved,
-          isIt: ticket.isIt,
-          serviceModule: ticket.serviceModule,
-          deliveredToOrganization: ticket.deliveredToOrganization,
-          category: ticket.category,
-          impact: ticket.impact,
-          shortDescription: ticket.shortDescription,
-          status: ticket.status,
-          workingHours: ticket.workingHours,
-          isUsed: ticket.isUsed,
-        }
-      })
+    this.matDialog.open(DisplayModalComponent, {
+      data: {
+        id: ticket.id,
+        type: ticket.type,
+        dateReceived: ticket.dateReceived,
+        dateResolved: ticket.dateResolved,
+        isIt: ticket.isIt,
+        serviceModule: ticket.serviceModule,
+        deliveredToOrganization: ticket.deliveredToOrganization,
+        category: ticket.category,
+        impact: ticket.impact,
+        shortDescription: ticket.shortDescription,
+        status: ticket.status,
+        workingHours: ticket.workingHours,
+        isUsed: ticket.isUsed,
+      },
+    });
   }
 
-  getDaysDiff(startDate: Date, endDate: Date){
+  getDaysDiff(startDate: Date, endDate: Date) {
     if (startDate && endDate) {
-      return Math.round((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
+      return Math.round(
+        (endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)
+      );
     } else {
       return 0;
     }
   }
 
   getSumOfCountedValues(): number {
-    return this.tickets.reduce(function(acc, curr) {
+    return this.tickets.reduce(function (acc, curr) {
       if (curr.isUsed === 'No') {
         return acc + +curr.workingHours;
       } else {

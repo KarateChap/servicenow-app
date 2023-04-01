@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "work-apps-c2809"
+  },
+  "targets": {
+    "work-apps-c2809": {
+      "hosting": {
+        "service-now-app": [
+          "work-apps-c2809"
+        ]
+      }
+    }
   }
 }
