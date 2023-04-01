@@ -1,14 +1,14 @@
-<div class="flex p-10 flex-col">
+<div class="flex p-5 flex-col">
   <p class="mb-4 font-bold">{{data.isEdit ? ('EDIT TICKET: ' + data.id) : 'ADD TICKET'}}</p>
 
   <form class="flex flex-col" [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
 
     <div class="flex gap-5">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label for="id">Ticket Number</mat-label>
         <input matInput type="text" id="id" formControlName="id">
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label for="type">Type</mat-label>
         <mat-select id="type" formControlName="type">
           <mat-option value="incident">Incident</mat-option>
@@ -18,7 +18,24 @@
     </div>
 
     <div class="flex gap-5">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="dateReceived">Date Received</mat-label>
+        <input matInput [matDatepicker]="dateReceived" id="dateReceived" formControlName="dateReceived">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="dateReceived"></mat-datepicker-toggle>
+        <mat-datepicker #dateReceived></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="dateReceived">Date Resolved</mat-label>
+        <input matInput [matDatepicker]="dateResolved" id="dateResolved" formControlName="dateResolved">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="dateResolved"></mat-datepicker-toggle>
+        <mat-datepicker #dateResolved></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-5">
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label for="isIt">IS/IT</mat-label>
         <mat-select id="isIt" formControlName="isIt">
           <mat-option value="zycus">Zycus</mat-option>
@@ -28,7 +45,33 @@
           <mat-option value="tradeshift">Tradeshift</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="serviceModule">Service Module</mat-label>
+        <input matInput type="text" id="serviceModule" formControlName="serviceModule">
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-5">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="deliveredToOrganization">Delivered To Organization</mat-label>
+        <input matInput type="text" id="deliveredToOrganization" formControlName="deliveredToOrganization">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="category">Category</mat-label>
+        <mat-select id="category" formControlName="category">
+          <mat-option value=""></mat-option>
+          <mat-option value="standard">Standard</mat-option>
+          <mat-option value="nonStandard">Non Standard</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-5">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="shortDescription">Short Description</mat-label>
+        <textarea matInput if="shortDescription" formControlName="shortDescription"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label for="impact">Impact</mat-label>
         <mat-select id="impact" formControlName="impact">
           <mat-option value="low">Low</mat-option>
@@ -39,15 +82,8 @@
       </mat-form-field>
     </div>
 
-    <div>
-      <mat-form-field appearance="fill" class="w-full">
-        <mat-label for="shortDescription">Short Description</mat-label>
-        <textarea matInput if="shortDescription" formControlName="shortDescription"></textarea>
-      </mat-form-field>
-    </div>
-
     <div class="flex gap-5">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label for="status">Status</mat-label>
         <mat-select id="status" formControlName="status">
           <mat-option value="inProgress">In Progress</mat-option>
@@ -66,7 +102,11 @@
           <mat-option value="submitted">Submitted</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label for="workingHours">Working Hours</mat-label>
+        <input matInput type="text" id="workingHours" formControlName="workingHours">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="w-full">
         <mat-label for="isUsed">Is Used</mat-label>
         <mat-select id="isUsed" formControlName="isUsed">
           <mat-option value="yes">Yes</mat-option>

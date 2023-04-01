@@ -12,175 +12,99 @@ export class TicketService {
     {
       id: 'INC0128231',
       type: 'INCIDENT',
+      dateReceived: new Date('2023-03-31'),
+      dateResolved: new Date(),
       isIt: 'Zycus',
+      serviceModule: 'iContract',
+      deliveredToOrganization: 'DESIGN TO DELIVERY',
+      category: '',
       impact: 'Low',
       shortDescription: 'PU TS User ID Creation',
       status: 'In Progress',
+      workingHours: 1,
       isUsed: 'No',
     },
     {
-      id: 'INC0128241',
+      id: 'ENCH0128154',
       type: 'ENHANCEMENT',
+      dateReceived: new Date('2023-03-31'),
+      dateResolved: new Date(),
       isIt: 'Coupa',
+      serviceModule: 'OneBuy-Coupa - Purchasing',
+      deliveredToOrganization: 'IT & Data France',
+      category: 'Standard',
       impact: 'Medium',
-      shortDescription: 'Change the contracting Party',
-      status: 'Acceptance Test',
-      isUsed: 'No',
-    },
-    {
-      id: 'INC0128252',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'To Be Reworked',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128253',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
+      shortDescription: 'Coupa Document Reassignment',
       status: 'Resolved',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128254',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Draft',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128255',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Closed',
+      workingHours: 2,
       isUsed: 'No',
     },
     {
-      id: 'INC0128256',
+      id: 'INC11546842',
       type: 'INCIDENT',
-      isIt: 'Sap Themis',
+      dateReceived: new Date('2023-03-31'),
+      dateResolved: new Date(),
+      isIt: 'Coupa',
+      serviceModule: 'OneBuy-Coupa - Purchasing',
+      deliveredToOrganization: 'IT & Data France',
+      category: 'Standard',
       impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Submitted',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128257',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Resolved',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128258',
-      type: 'ENHANCEMENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Draft',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128259',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
+      shortDescription: 'Coupa Document Reassignment',
       status: 'Closed',
+      workingHours: 2,
       isUsed: 'No',
     },
     {
-      id: 'INC0128210',
-      type: 'ENHANCEMENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Submitted',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128211',
+      id: 'INC115464232',
       type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Resolved',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128212',
-      type: 'ENHANCEMENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Draft',
-      isUsed: 'Yes',
-    },
-    {
-      id: 'INC0128213',
-      type: 'INCIDENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
+      dateReceived: new Date('2023-03-31'),
+      dateResolved: new Date(),
+      isIt: 'Coupa',
+      serviceModule: 'OneBuy-Coupa - Purchasing',
+      deliveredToOrganization: 'IT & Data France',
+      category: 'Standard',
+      impact: 'Top',
+      shortDescription: 'Coupa Document Reassignment',
       status: 'Closed',
+      workingHours: 2,
       isUsed: 'No',
     },
-    {
-      id: 'INC0128214',
-      type: 'ENHANCEMENT',
-      isIt: 'Sap Themis',
-      impact: 'High',
-      shortDescription: 'Create Purchase Order',
-      status: 'Submitted',
-      isUsed: 'Yes',
-    },
-
   ];
 
   constructor() {}
 
-  get allTickets(){
+  get allTickets() {
     return [...this.tickets];
   }
 
-  changeIsUsed(id: string, isUsed: string){
-    const index = this.tickets.findIndex(item => item.id === id);
+  changeIsUsed(id: string, isUsed: string) {
+    const index = this.tickets.findIndex((item) => item.id === id);
     this.tickets[index].isUsed = isUsed;
     this.ticketChanged.next(this.tickets);
   }
 
-  changeStatus(id: string, status: string){
-    const index = this.tickets.findIndex(item => item.id === id);
+  changeStatus(id: string, status: string) {
+    const index = this.tickets.findIndex((item) => item.id === id);
     this.tickets[index].status = status;
     this.ticketChanged.next(this.tickets);
   }
 
-  addNewTicket(newTicket: Ticket){
+  addNewTicket(newTicket: Ticket) {
     this.tickets.push(newTicket);
     this.ticketChanged.next(this.tickets);
   }
 
-  editTicket(ticket: Ticket){
-    const index = this.tickets.findIndex(item => item.id === ticket.id);
-    if(index !== -1){
+  editTicket(ticket: Ticket) {
+    const index = this.tickets.findIndex((item) => item.id === ticket.id);
+    if (index !== -1) {
       this.tickets[index] = ticket;
       this.ticketChanged.next(this.tickets);
     }
   }
 
-  deleteTicket(id: string){
-    const index = this.tickets.findIndex(item => item.id === id);
-    if(index !== -1){
+  deleteTicket(id: string) {
+    const index = this.tickets.findIndex((item) => item.id === id);
+    if (index !== -1) {
       this.tickets.splice(index, 1);
       this.ticketChanged.next(this.tickets);
     }

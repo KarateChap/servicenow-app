@@ -1,0 +1,91 @@
+<div class="flex p-8 flex-col">
+  <div class="flex items-center justify-center mb-4">
+    <span class="font-bold text-2xl">Ticket Details:</span>
+  </div>
+  <div class="mb-5">
+    <p>
+      {{ data.type }}: <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.id" (click)="copyToClipBoard(data.id)">{{ data.id }}</span>
+    </p>
+    <p>
+      Category:
+      <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.category" (click)="copyToClipBoard(data.category)">{{ data.category ? data.category : "N/A" }}</span>
+    </p>
+    <p>
+      IS/IT: <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.isIt" (click)="copyToClipBoard(data.isIt)">{{ data.isIt }}</span>
+    </p>
+    <p>
+      Service Module: <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.serviceModule" (click)="copyToClipBoard(data.serviceModule)">{{ data.serviceModule }}</span>
+    </p>
+    <p>
+      Delivered To Organization:
+      <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.deliveredToOrganization" (click)="copyToClipBoard(data.deliveredToOrganization)">{{ data.deliveredToOrganization }}</span>
+    </p>
+    <p>
+      Working Hours: <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.workingHours" (click)="copyToClipBoard(data.workingHours)">{{ data.workingHours }}</span>
+    </p>
+  </div>
+
+  <div class="mb-5">
+    <p class="font-bold">Other Details</p>
+    <p class="leading-[35px]">
+      Impact:
+      <span
+        class="status"
+        [ngClass]="{
+          low: data.impact === 'Low',
+          medium: data.impact === 'Medium',
+          high: data.impact === 'High',
+          top: data.impact === 'Top'
+        }"
+        >{{ data.impact }}</span
+      >
+    </p>
+    <p class="leading-[35px]">
+      Status:
+      <span
+        class="status"
+        [ngClass]="{
+          'in-progress': data.status === 'In Progress',
+          'waiting-for': data.status === 'Waiting For',
+          cancelled: data.status === 'Cancelled',
+          resolved: data.status === 'Resolved',
+          draft: data.status === 'Draft',
+          deployed: data.status === 'Deployed',
+          qualified: data.status === 'Qualified',
+          'acceptance-test': data.status === 'Acceptance Test',
+          'to-be-reworked': data.status === 'To Be Reworked',
+          accepted: data.status === 'Accepted',
+          screening: data.status === 'Screening',
+          validated: data.status === 'Validated',
+          closed: data.status === 'Closed',
+          submitted: data.status === 'Submitted'
+        }"
+        >{{ data.status }}</span
+      >
+    </p>
+    <p class="leading-[35px]">
+      Is Used:
+      <span
+        class="status"
+        [ngClass]="{ yes: data.isUsed === 'Yes', no: data.isUsed === 'No' }"
+        >{{ data.isUsed }}</span
+      >
+    </p>
+  </div>
+
+  <div class="max-w-[450px] border-2 p-3 rounded-md mb-3">
+    <p>
+      <span class="font-bold">Short Description:</span>
+      {{ data.shortDescription }}
+    </p>
+  </div>
+
+  <div class="w-full justify-center text-center mb-5">
+    <span>
+      Received: <span class="font-bold">{{ data.dateReceived | date }}</span>
+    </span>
+    <span>
+      Resolved: <span class="font-bold">{{ data.dateResolved | date }}</span>
+    </span>
+  </div>
+</div>

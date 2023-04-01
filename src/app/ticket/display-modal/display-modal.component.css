@@ -1,25 +1,6 @@
-
-
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
-}
-
-td, th {
-  width: 25%;
-}
-
-.status-container{
-  text-align: center;
-}
-
-.center-text{
-  text-align: center;
-}
-
 .status{
   white-space: nowrap;
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: 5px;
   letter-spacing: 0.1em;
 }
@@ -110,24 +91,3 @@ td, th {
   background-color: #ff595e;
   color: white;
 }
-
-.mat-mdc-table-sticky-border-elem-right {
-  border-left: 2px solid #e0e0e0;
-}
-
-.mat-mdc-table-sticky-border-elem-left {
-  border-right: 2px solid #e0e0e0;
-}
-
-
-td, th {
-  text-align: center !important;
-  vertical-align: middle !important;
-}
-
-
-:host ::ng-deep .mat-sort-header-container {
-  display: flex;
-  justify-content: center;
-}
-

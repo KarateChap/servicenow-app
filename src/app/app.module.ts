@@ -23,8 +23,11 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { AddEditModalComponent } from './ticket/add-edit-modal/add-edit-modal.component';
 import {MatSelectModule} from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
+import { ShortenPipe } from './ticket/shorten.pipe';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatBadgeModule} from '@angular/material/badge';
+import { DisplayModalComponent } from './ticket/display-modal/display-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     IncidentComponent,
     LoginComponent,
     AddEditModalComponent,
+    ShortenPipe,
+    DisplayModalComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +58,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatDialogModule,
     MatSelectModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent],

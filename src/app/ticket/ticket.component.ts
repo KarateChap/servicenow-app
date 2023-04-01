@@ -9,6 +9,7 @@ import { AddEditModalComponent } from './add-edit-modal/add-edit-modal.component
 // import { SelectionModel } from '@angular/cdk/collections';
 import { Ticket } from './ticket.model';
 import { TicketService } from './ticket.service';
+import { DisplayModalComponent } from './display-modal/display-modal.component';
 
 const NAMES: string[] = [];
 
@@ -23,13 +24,21 @@ export class IncidentComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'id',
     'type',
+    'dateReceived',
+    'dateResolved',
+    'accumulatedDay',
     'isIt',
+    'serviceModule',
+    'deliveredToOrganization',
+    'category',
     'impact',
     'shortDescription',
     'status',
+    'workingHours',
     'isUsed',
-    'delete',
+    'actions',
   ];
+
   dataSource: MatTableDataSource<Ticket>;
   // selection = new SelectionModel<Ticket>(true, []);
 
@@ -116,11 +125,17 @@ export class IncidentComponent implements OnInit, OnDestroy {
         isEdit: true,
         id: row.id,
         type: row.type,
+        dateReceived: row.dateReceived,
+        dateResolved: row.dateResolved,
         isIt: row.isIt,
+        serviceModule: row.serviceModule,
+        deliveredToOrganization: row.deliveredToOrganization,
+        category: row.category,
         impact: row.impact,
         shortDescription: row.shortDescription,
         status: row.status,
-        isUsed: row.isUsed
+        workingHours: row.workingHours,
+        isUsed: row.isUsed,
       }
     })
   }
@@ -134,12 +149,48 @@ export class IncidentComponent implements OnInit, OnDestroy {
     this.ticketService.deleteTicket(id);
   }
 
-  onCopyToClipBoard(id: string) {
+  openDetails(ticket: Ticket) {
     this.snackBar.open(
-      'Ticket Number: ' + id + ' has been copied to clipboard',
+      'Ticket Number: ' + ticket.id + ' has been copied to clipboard',
       'close',
       { duration: 3000 }
     );
+
+      this.matDialog.open(DisplayModalComponent, {
+        data: {
+          id: ticket.id,
+          type: ticket.type,
+          dateReceived: ticket.dateReceived,
+          dateResolved: ticket.dateResolved,
+          isIt: ticket.isIt,
+          serviceModule: ticket.serviceModule,
+          deliveredToOrganization: ticket.deliveredToOrganization,
+          category: ticket.category,
+          impact: ticket.impact,
+          shortDescription: ticket.shortDescription,
+          status: ticket.status,
+          workingHours: ticket.workingHours,
+          isUsed: ticket.isUsed,
+        }
+      })
+  }
+
+  getDaysDiff(startDate: Date, endDate: Date){
+    if (startDate && endDate) {
+      return Math.round((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
+    } else {
+      return 0;
+    }
+  }
+
+  getSumOfCountedValues(): number {
+    return this.tickets.reduce(function(acc, curr) {
+      if (curr.isUsed === 'No') {
+        return acc + +curr.workingHours;
+      } else {
+        return acc;
+      }
+    }, 0);
   }
 
   ngOnDestroy() {
