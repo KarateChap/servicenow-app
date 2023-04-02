@@ -21,14 +21,14 @@
       <mat-form-field appearance="fill" class="w-full">
         <mat-label for="dateReceived">Date Received</mat-label>
         <input matInput [matDatepicker]="dateReceived" id="dateReceived" formControlName="dateReceived">
-        <mat-hint>MM/DD/YYYY</mat-hint>
+        <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
         <mat-datepicker-toggle matIconSuffix [for]="dateReceived"></mat-datepicker-toggle>
         <mat-datepicker #dateReceived></mat-datepicker>
       </mat-form-field>
       <mat-form-field appearance="fill" class="w-full">
         <mat-label for="dateReceived">Date Resolved</mat-label>
         <input matInput [matDatepicker]="dateResolved" id="dateResolved" formControlName="dateResolved">
-        <mat-hint>MM/DD/YYYY</mat-hint>
+        <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
         <mat-datepicker-toggle matIconSuffix [for]="dateResolved"></mat-datepicker-toggle>
         <mat-datepicker #dateResolved></mat-datepicker>
       </mat-form-field>
@@ -109,7 +109,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill" class="w-full">
         <mat-label for="workingHours">Working Hours</mat-label>
-        <input matInput type="text" id="workingHours" formControlName="workingHours">
+        <input matInput type="number" id="workingHours" formControlName="workingHours">
       </mat-form-field>
       <mat-form-field appearance="fill" class="w-full">
         <mat-label for="isUsed">Is Used</mat-label>

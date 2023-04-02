@@ -33,6 +33,7 @@ import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DeleteModalComponent } from './ticket/delete-modal/delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AddEditModalComponent,
     ShortenPipe,
     DisplayModalComponent,
+    DeleteModalComponent,
   ],
   imports: [
     BrowserModule,

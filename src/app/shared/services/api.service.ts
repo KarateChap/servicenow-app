@@ -41,13 +41,13 @@ export class ApiService {
     return getDocs<any>(dataRef);
   }
 
-  collectionDataQuery(path, queryFn?) {
+  async collectionDataQuery(path, queryFn?) {
     let dataRef: any = this.collectionRef(path);
     if (queryFn) {
       const q = query(dataRef, queryFn);
       dataRef = q;
     }
-    const collection_data = collectionData<any>(dataRef, {idField: 'id'});
+    const collection_data = collectionData(dataRef, {idField: 'ticketId'})
     return collection_data;
   }
 

@@ -1,10 +1,13 @@
 <mat-toolbar color="primary" class="flex justify-between w-full">
-  <span class="md:flex hidden">TICKET CORNER</span>
+  <div class="flex items-center justify-center">
+    <mat-icon color="accent">touch_app</mat-icon>
+    <span class="text-[16px] tracking-wider">Ticket Corner</span>
+  </div>
   <div class="flex gap-2">
     <!-- <div class="flex justify-center items-center gap-3">
       <button mat-raised-button color="accent" routerLink="/tickets">TICKETS</button>
     </div> -->
-    <div class="flex justify-center items-center">
+    <div class="flex justify-center items-center" *ngIf="ticketService.userId">
       <button mat-mini-fab color="warn" (click)="onLogout()">
         <mat-icon>logout</mat-icon>
       </button>

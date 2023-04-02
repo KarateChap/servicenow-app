@@ -1,46 +1,96 @@
 <div class="flex flex-col py-10 w-full px-5">
-  <div class="w-[95vw] flex flex-col items-center justify-center">
-    <div class="flex gap-5 w-full">
-      <div class="w-full p-4 flex-[1]">
-        <mat-chip-listbox>
-          <mat-chip-option (click)="filterTicket('')" color="accent" class="font-bold"
-            >All</mat-chip-option
-          >
-          <mat-chip-option (click)="filterTicket('INCIDENT')" color="accent"
-            >Incidents</mat-chip-option
-          >
-          <mat-chip-option (click)="filterTicket('ENHANCEMENT')" color="accent"
-            >Enhancements</mat-chip-option
-          >
-        </mat-chip-listbox>
+  <div class="w-[90vw] flex flex-col items-center justify-center">
+
+    <div class="flex w-full flex-row flex-wrap mb-10 justify-between">
+
+      <div>
+        <p class="text-3xl font-bold" *ngIf="authService.username">Hi, {{authService.username}}!</p>
       </div>
 
-    <button mat-fab extended color="primary" (click)="addNewTicket()">
-      <mat-icon>add</mat-icon>
-      Create Ticket
-    </button>
+      <div class="flex justify-center md:justify-end gap-5 flex-row flex-wrap">
+        <div class="flex items-center">
+          <div>
+            <mat-chip-listbox>
+              <mat-chip-option
+                (click)="filterTicket('')"
+                color="accent"
+                class="font-bold"
+                >All</mat-chip-option
+              >
+              <mat-chip-option (click)="filterTicket('INCIDENT')" color="accent"
+                >Incidents</mat-chip-option
+              >
+              <mat-chip-option (click)="filterTicket('ENHANCEMENT')" color="accent"
+                >Enhancements</mat-chip-option
+              >
+            </mat-chip-listbox>
+          </div>
+        </div>
 
-      <mat-form-field appearance="outline" class="flex-[1]">
-        <mat-label>Filter</mat-label>
-        <input
-          matInput
-          (keyup)="applyFilter($event)"
-          placeholder="INC1156760"
-          #input
-        />
-      </mat-form-field>
+        <div class="flex justify-center items-center gap-5 border-2 rounded-xl p-3 flex-wrap">
+          <button mat-fab extended color="primary" (click)="addNewTicket()">
+            <mat-icon>add</mat-icon>
+            Create Ticket
+          </button>
 
-      <div class="flex items-start gap-3">
-          <span class="text-2xl font-bold pt-1">Available Hours:</span>
-        <button mat-fab extended color="primary">
-          <mat-icon>schedule</mat-icon>
-          {{ getSumOfCountedValues() }}
-        </button>
+          <button mat-fab extended color="warn" (click)="deleteAllTicket()">
+            <mat-icon>delete</mat-icon>
+            Delete All Tickets
+          </button>
+
+          <div class="flex justify-center items-center flex-col border-2 rounded-xl p-2">
+            <label>
+              <div
+                class="!bg-[#3f51b5] flex justify-center items-center gap-3 text-sm tracking-wider font-bold text-white py-3 px-4 pr-5 shadow-md rounded-full hover:opacity-[90%] cursor-pointer"
+              >
+              <mat-icon>upload</mat-icon>
+                Upload CSV
+              </div>
+              <input
+                type="file"
+                #fileImportInput
+                name="File Upload"
+                id="csvFileUpload"
+                (change)="fileChangeListener($event)"
+                accept=".csv"
+              />
+            </label>
+            <a href="https://drive.google.com/file/d/1GhJqTO4Vk69L0lWfM_vBuuUzCH8URpra/view?usp=sharing" target="_blank" class="text-[12px] hover:text-red-400">Download CSV Format</a>
+          </div>
+
+        </div>
+
+        <div class="flex items-center justify-end gap-3">
+          <span class="sm:text-xl md:text-2xl font-bold pt-1">Available Hours:</span>
+          <button mat-fab extended color="primary">
+            <mat-icon>schedule</mat-icon>
+            {{ getSumOfCountedValues() }}
+          </button>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+    <div class="flex items-start w-full">
+      <div class="w-full custom-form">
+        <mat-form-field appearance="outline" class="custom-form">
+          <mat-label>Filter</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="INC1156760"
+            #input
+          />
+        </mat-form-field>
       </div>
     </div>
 
     <div class="mat-elevation-z8 w-full overflow-x-scroll">
-      <table mat-table [dataSource]="dataSource" matSort>
+
+      <table mat-table [dataSource]="dataSource" matSort class="mt-5">
         <ng-container matColumnDef="id" sticky>
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
           <td mat-cell *matCellDef="let row">
@@ -62,14 +112,18 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>
             RECEIVED DATE
           </th>
-          <td mat-cell *matCellDef="let row">{{ row.dateReceived ? (row.dateReceived | date) : 'N/A' }}</td>
+          <td mat-cell *matCellDef="let row">
+            {{ row.dateReceived ? (row.dateReceived | date) : "N/A" }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="dateResolved">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>
             RESOLVED DATE
           </th>
-          <td mat-cell *matCellDef="let row">{{ row.dateResolved ? (row.dateResolved | date) : 'N/A' }}</td>
+          <td mat-cell *matCellDef="let row">
+            {{ row.dateResolved ? (row.dateResolved | date) : "N/A" }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="accumulatedDay">
@@ -104,7 +158,9 @@
 
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>CATEGORY</th>
-          <td mat-cell *matCellDef="let row">{{ row.category ? row.category : 'N/A' }}</td>
+          <td mat-cell *matCellDef="let row">
+            {{ row.category ? row.category : "N/A" }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="impact">
@@ -161,80 +217,59 @@
             <mat-menu #status="matMenu">
               <button
                 mat-menu-item
-                (click)="onStatusChanged(row.id, 'In Progress')"
+                (click)="onStatusChanged(row, 'In Progress')"
               >
                 In Progress
               </button>
               <button
                 mat-menu-item
-                (click)="onStatusChanged(row.id, 'Waiting For')"
+                (click)="onStatusChanged(row, 'Waiting For')"
               >
                 Waiting For
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Screening')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Screening')">
                 Screening
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Resolved')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Resolved')">
                 Resolved
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Cancelled')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Cancelled')">
                 Cancelled
               </button>
-              <button mat-menu-item (click)="onStatusChanged(row.id, 'Draft')">
+              <button mat-menu-item (click)="onStatusChanged(row, 'Draft')">
                 Draft
               </button>
-              <button mat-menu-item (click)="onStatusChanged(row.id, 'Closed')">
+              <button mat-menu-item (click)="onStatusChanged(row, 'Closed')">
                 Closed
               </button>
               <button
                 mat-menu-item
-                (click)="onStatusChanged(row.id, 'Waiting For')"
+                (click)="onStatusChanged(row, 'Waiting For')"
               >
                 Waiting For
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Accepted')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Accepted')">
                 Accepted
               </button>
               <button
                 mat-menu-item
-                (click)="onStatusChanged(row.id, 'Acceptance Test')"
+                (click)="onStatusChanged(row, 'Acceptance Test')"
               >
                 Acceptance Test
               </button>
               <button
                 mat-menu-item
-                (click)="onStatusChanged(row.id, 'To Be Reworked')"
+                (click)="onStatusChanged(row, 'To Be Reworked')"
               >
                 To Be Reworked
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Validated')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Validated')">
                 Validated
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Deployed')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Deployed')">
                 Deployed
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row.id, 'Qualified')"
-              >
+              <button mat-menu-item (click)="onStatusChanged(row, 'Qualified')">
                 Qualified
               </button>
             </mat-menu>
@@ -242,8 +277,10 @@
         </ng-container>
 
         <ng-container matColumnDef="workingHours">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>HOURS</th>
-          <td mat-cell *matCellDef="let row">{{ row.workingHours ? row.workingHours : 'N/A'}}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>WORKING HOURS</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.workingHours ? row.workingHours : "N/A" }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="isUsed">
@@ -262,10 +299,10 @@
               >{{ row.isUsed }}</span
             >
             <mat-menu #isUsed="matMenu">
-              <button mat-menu-item (click)="onIsUsedChanged(row.id, 'Yes')">
+              <button mat-menu-item (click)="onIsUsedChanged(row, 'Yes')">
                 Yes
               </button>
-              <button mat-menu-item (click)="onIsUsedChanged(row.id, 'No')">
+              <button mat-menu-item (click)="onIsUsedChanged(row, 'No')">
                 No
               </button>
             </mat-menu>
@@ -283,7 +320,7 @@
               >
               <mat-icon
                 class="cursor-pointer hover:text-red-600 scale-[90%] hover:scale-[110%] transition ease-in-out"
-                (click)="onDelete(row.id)"
+                (click)="onDelete(row)"
                 >close</mat-icon
               >
             </div>
@@ -295,8 +332,10 @@
 
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            No data matching the filter "{{ input.value }}"
+          <td class="mat-cell" colspan="15">
+            <div class="mt-5 w-full p-5">
+              <p class="text-xl p-2 border-2 rounded-md">No Data Found. Please Add ticket/s first</p>
+            </div>
           </td>
         </tr>
       </table>

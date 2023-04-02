@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { ApiService } from '../sservices/api.service';
+import { ApiService } from './api.service';
+import { TicketService } from './ticket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,9 @@ import { ApiService } from '../sservices/api.service';
 export class AuthService {
   public _uid = new BehaviorSubject<any>(null);
   currentUser: any;
+  username = '';
 
-  constructor(private fireAuth: Auth, private apiService: ApiService) {}
+  constructor(private fireAuth: Auth, private apiService: ApiService, private ticketService: TicketService) {}
 
   async login(email: string, password: string): Promise<any> {
     try {
@@ -19,7 +21,6 @@ export class AuthService {
         email,
         password
       );
-      console.log(response);
       if (response?.user) {
         this.setUserData(response.user.uid);
       }
@@ -31,7 +32,6 @@ export class AuthService {
   getId() {
     const auth = getAuth();
     this.currentUser = auth.currentUser;
-    console.log(this.currentUser);
     return this.currentUser?.uid;
   }
 
@@ -46,7 +46,6 @@ export class AuthService {
         formValue.email,
         formValue.password
       );
-      console.log('registered user: ', registeredUser);
       const data = {
         email: formValue.email,
         username: formValue.username,
@@ -78,6 +77,7 @@ export class AuthService {
       await this.fireAuth.signOut();
       this._uid.next(null);
       this.currentUser = null;
+      this.ticketService.userId = '';
       return true;
     } catch(e) {
       throw(e);
@@ -87,7 +87,6 @@ export class AuthService {
   checkAuth(): Promise<any> {
     return new Promise((resolve, reject) => {
       onAuthStateChanged(this.fireAuth, user => {
-        console.log('auth user: ', user);
         resolve(user)
       });
     });
@@ -97,6 +96,7 @@ export class AuthService {
   async getUserData(id) {
     const docSnap: any = await this.apiService.getDocById(`users/${id}`);
       if(docSnap?.exists()) {
+        this.username = docSnap.data().username;
         return docSnap.data();
       } else {
         throw('No such document exists');

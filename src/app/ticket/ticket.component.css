@@ -1,23 +1,22 @@
-
-
 .mat-mdc-form-field {
   font-size: 14px;
   width: 100%;
 }
 
-td, th {
+td,
+th {
   width: 25%;
 }
 
-.status-container{
+.status-container {
   text-align: center;
 }
 
-.center-text{
+.center-text {
   text-align: center;
 }
 
-.status{
+.status {
   white-space: nowrap;
   padding: 5px 10px;
   border-radius: 5px;
@@ -119,15 +118,34 @@ td, th {
   border-right: 2px solid #e0e0e0;
 }
 
-
-td, th {
+td,
+th {
   text-align: center !important;
   vertical-align: middle !important;
 }
-
 
 :host ::ng-deep .mat-sort-header-container {
   display: flex;
   justify-content: center;
 }
 
+
+.csv-div {
+  margin-top: 15px;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.upload-csv {
+  background-color: var(--primary);
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+input {
+  display: none;
+}

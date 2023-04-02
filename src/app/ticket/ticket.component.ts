@@ -7,11 +7,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription } from 'rxjs';
 import { AddEditModalComponent } from './add-edit-modal/add-edit-modal.component';
 // import { SelectionModel } from '@angular/cdk/collections';
-import { Ticket } from './ticket.model';
-import { TicketService } from './ticket.service';
+import { Ticket } from '../shared/model/ticket.model';
+import { TicketService } from '../shared/services/ticket.service';
 import { DisplayModalComponent } from './display-modal/display-modal.component';
-import { ApiService } from '../sservices/api.service';
-import { AuthService } from '../login/auth.service';
+import { ApiService } from '../shared/services/api.service';
+import { AuthService } from '../shared/services/auth.service';
+import { TicketID } from '../shared/model/ticketId.model';
+import { NgxCsvParser } from 'ngx-csv-parser';
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 
 const NAMES: string[] = [];
 
@@ -23,8 +26,8 @@ const NAMES: string[] = [];
 export class TicketComponent implements OnInit, OnDestroy {
   userId = '';
   ticketSubs = new Subscription();
-  tickets: Ticket[] = [];
-  userTickets: Observable<any[]>;
+  tickets: TicketID[] = [];
+  csvTickets: Ticket[] = [];
   displayedColumns: string[] = [
     'id',
     'type',
@@ -43,7 +46,7 @@ export class TicketComponent implements OnInit, OnDestroy {
     'actions',
   ];
 
-  dataSource: MatTableDataSource<Ticket>;
+  dataSource: MatTableDataSource<TicketID>;
   // selection = new SelectionModel<Ticket>(true, []);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -53,10 +56,9 @@ export class TicketComponent implements OnInit, OnDestroy {
     private ticketService: TicketService,
     private snackBar: MatSnackBar,
     private matDialog: MatDialog,
-    private apiService: ApiService,
-    private authService: AuthService
+    public authService: AuthService,
+    private ngxCsvParser: NgxCsvParser
   ) {
-    this.tickets = this.ticketService.allTickets;
     this.dataSource = new MatTableDataSource(this.tickets);
   }
 
@@ -65,21 +67,22 @@ export class TicketComponent implements OnInit, OnDestroy {
       (newTickets) => {
         this.tickets = newTickets;
         this.dataSource = new MatTableDataSource(this.tickets);
+        this.ticketService.tickets = this.tickets;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
       }
     );
 
     this.authService.checkAuth().then((user) => {
       this.userId = user.uid;
+      this.ticketService.userId = this.userId;
+
+      this.ticketService.getTickets();
+      this.authService.getUserData(this.userId);
     });
-
-
-
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  ngAfterViewInit() {}
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -98,22 +101,22 @@ export class TicketComponent implements OnInit, OnDestroy {
     }
   }
 
-  onIsUsedChanged(id: string, isUsed: string) {
+  onIsUsedChanged(row: TicketID, isUsed: string) {
     this.snackBar.open(
       'Ticket Number: ' +
-        id +
+        row.id +
         ' has been changed to: ' +
         (isUsed === 'Yes' ? "'Used'" : "'Available'"),
       'close',
       { duration: 3000 }
     );
-    this.ticketService.changeIsUsed(id, isUsed);
+    this.ticketService.changeIsUsed(row.ticketId, isUsed);
   }
 
-  onStatusChanged(id: string, status: string) {
+  onStatusChanged(row: TicketID, status: string) {
     this.snackBar.open(
       'Ticket Number: ' +
-        id +
+        row.id +
         ' has been changed with the new status: ' +
         "'" +
         status +
@@ -121,21 +124,23 @@ export class TicketComponent implements OnInit, OnDestroy {
       'close',
       { duration: 3000 }
     );
-    this.ticketService.changeStatus(id, status);
+    this.ticketService.changeStatus(row.ticketId, status);
   }
 
   addNewTicket() {
+
     this.matDialog.open(AddEditModalComponent, {
       data: {
         isEdit: false,
-        userId: this.userId
+        userId: this.userId,
       },
     });
   }
-  onEdit(row: Ticket) {
+  onEdit(row: TicketID) {
     this.matDialog.open(AddEditModalComponent, {
       data: {
         userId: this.userId,
+        ticketId: row.ticketId,
         isEdit: true,
         id: row.id,
         type: row.type,
@@ -154,11 +159,15 @@ export class TicketComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDelete(id: string) {
-    this.snackBar.open('Ticket Number: ' + id + ' has been deleted', 'close', {
-      duration: 3000,
-    });
-    this.ticketService.deleteTicket(id);
+  onDelete(ticket: TicketID) {
+    this.snackBar.open(
+      'Ticket Number: ' + ticket.id + ' has been deleted',
+      'close',
+      {
+        duration: 3000,
+      }
+    );
+    this.ticketService.deleteTicket(ticket.ticketId);
   }
 
   openDetails(ticket: Ticket) {
@@ -205,6 +214,48 @@ export class TicketComponent implements OnInit, OnDestroy {
         return acc;
       }
     }, 0);
+  }
+
+  fileChangeListener($event: any): void {
+    let files = $event.srcElement.files;
+    this.ngxCsvParser
+      .parse(files[0], { header: true, delimiter: ',' })
+      .pipe()
+      .subscribe((result: any) => {
+        result.forEach(el => {
+          this.csvTickets.push({
+            id: el['id'],
+            type: el['type'],
+            dateReceived: el.receivedDate ? new Date(el.receivedDate) : null,
+            dateResolved: el.resolvedDate ? new Date(el.resolvedDate) : null,
+            isIt: el['isIt'],
+            serviceModule: el['serviceModule'],
+            deliveredToOrganization: el['deliveredToOrganization'],
+            category: el['category'],
+            impact: el['impact'],
+            shortDescription: el['shortDescription'],
+            status: el['status'],
+            workingHours: el['workingHours'],
+            isUsed: el['isUsed'],
+          })
+        });
+
+
+        const filteredTickets = this.csvTickets.filter((newItem) => {
+          return !this.tickets.find((existingItem) => existingItem.id === newItem.id);
+        });
+
+        filteredTickets.forEach(element => {
+          this.ticketService.addNewTicket(element);
+        });
+
+        console.log(filteredTickets);
+      });
+  }
+
+  deleteAllTicket(){
+    this.ticketService.allTicketsToDelete = this.tickets;
+    this.matDialog.open(DeleteModalComponent);
   }
 
   ngOnDestroy() {

@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Ticket } from '../ticket.model';
-import { TicketService } from '../ticket.service';
+import { Ticket } from '../../shared/model/ticket.model';
+import { TicketService } from '../../shared/services/ticket.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -18,18 +18,20 @@ export class AddEditModalComponent {
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<AddEditModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data
-
   ) {
     if (!data.isEdit) {
-
       this.ticketForm = new FormGroup({
         id: new FormControl('', [Validators.required]),
         type: new FormControl('incident', [Validators.required]),
-        dateReceived: new FormControl(new Date, [Validators.required]),
+        dateReceived: new FormControl(new Date(), [Validators.required]),
         dateResolved: new FormControl(),
         isIt: new FormControl('zycus', [Validators.required]),
-        serviceModule: new FormControl('SAP Themis ERP - Purchasing', [Validators.required]),
-        deliveredToOrganization: new FormControl('DESIGN TO DELIVERY', [Validators.required]),
+        serviceModule: new FormControl('SAP Themis ERP - Purchasing', [
+          Validators.required,
+        ]),
+        deliveredToOrganization: new FormControl('DESIGN TO DELIVERY', [
+          Validators.required,
+        ]),
         category: new FormControl(''),
         impact: new FormControl('low', [Validators.required]),
         shortDescription: new FormControl('', [Validators.required]),
@@ -38,26 +40,30 @@ export class AddEditModalComponent {
         isUsed: new FormControl('no', [Validators.required]),
       });
     } else {
-
-
-
-
       this.ticketForm = new FormGroup({
         id: new FormControl(data.id, [Validators.required]),
         type: new FormControl(data.type.toLowerCase(), [Validators.required]),
         dateReceived: new FormControl(data.dateReceived, [Validators.required]),
-        dateResolved: new FormControl(data.dateResolved, [Validators.required]),
+        dateResolved: new FormControl(data.dateResolved),
         isIt: new FormControl(
           data.isIt.toLowerCase().replace(/\s(.)/g, function (match, group1) {
             return group1.toUpperCase();
           }),
           [Validators.required]
         ),
-        serviceModule: new FormControl(data.serviceModule, [Validators.required]),
-        deliveredToOrganization: new FormControl(data.deliveredToOrganization, [Validators.required]),
-        category: new FormControl(data.category.toLowerCase().replace(/\s(.)/g, function (match, group1) {
-          return group1.toUpperCase();
-        })),
+        serviceModule: new FormControl(data.serviceModule, [
+          Validators.required,
+        ]),
+        deliveredToOrganization: new FormControl(data.deliveredToOrganization, [
+          Validators.required,
+        ]),
+        category: new FormControl(
+          data.category
+            .toLowerCase()
+            .replace(/\s(.)/g, function (match, group1) {
+              return group1.toUpperCase();
+            })
+        ),
         impact: new FormControl(data.impact.toLowerCase(), [
           Validators.required,
         ]),
@@ -80,7 +86,6 @@ export class AddEditModalComponent {
   }
 
   onSubmit() {
-
     if (!this.data.isEdit) {
       let newTicket: Ticket = {
         id: this.ticketForm.value.id.toUpperCase(),
@@ -102,13 +107,24 @@ export class AddEditModalComponent {
           this.ticketForm.value.isUsed.slice(1),
       };
 
-      this.ticketService.addNewTicket(newTicket, this.data.userId);
-
-      this.snackBar.open(
-        'Ticket Number: ' + newTicket.id + ' has been added.',
-        'close',
-        { duration: 3000 }
+      const existingItem = this.ticketService.tickets.find(
+        (item) => item.id === newTicket.id
       );
+      if (existingItem) {
+        this.snackBar.open(
+          'Ticket Number: ' +
+            newTicket.id +
+            ' is already existing! Please add new ticket/s.',
+          'close'
+        );
+      } else {
+        this.ticketService.addNewTicket(newTicket);
+        this.snackBar.open(
+          'Ticket Number: ' + newTicket.id + ' has been added.',
+          'close',
+          { duration: 3000 }
+        );
+      }
     } else {
       let ticket: Ticket = {
         id: this.ticketForm.getRawValue().id.toUpperCase(),
@@ -130,7 +146,7 @@ export class AddEditModalComponent {
           this.ticketForm.value.isUsed.slice(1),
       };
 
-      this.ticketService.editTicket(ticket);
+      this.ticketService.editTicket(this.data.ticketId, ticket);
 
       this.snackBar.open(
         'Ticket Number: ' + ticket.id + ' has been edited.',
