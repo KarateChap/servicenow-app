@@ -170,7 +170,7 @@ export class TicketComponent implements OnInit, OnDestroy {
     this.ticketService.deleteTicket(ticket.ticketId);
   }
 
-  openDetails(ticket: Ticket) {
+  openDetails(ticket: TicketID) {
     this.snackBar.open(
       'Ticket Number: ' + ticket.id + ' has been copied to clipboard',
       'close',
@@ -180,6 +180,7 @@ export class TicketComponent implements OnInit, OnDestroy {
     this.matDialog.open(DisplayModalComponent, {
       data: {
         id: ticket.id,
+        ticketId: ticket.ticketId,
         type: ticket.type,
         dateReceived: ticket.dateReceived,
         dateResolved: ticket.dateResolved,

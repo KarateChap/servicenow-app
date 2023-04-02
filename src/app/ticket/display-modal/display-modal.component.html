@@ -2,7 +2,7 @@
   <div class="flex items-center justify-center mb-4">
     <span class="font-bold text-2xl">Ticket Details:</span>
   </div>
-  <div class="mb-5">
+  <div class="mb-5 border-2 rounded-xl p-5">
     <p>
       {{ data.type }}: <span class="font-bold cursor-pointer" [cdkCopyToClipboard]="data.id" (click)="copyToClipBoard(data.id)">{{ data.id }}</span>
     </p>
@@ -87,5 +87,11 @@
     <span>
       Resolved: <span class="font-bold">{{ data.dateResolved | date }}</span>
     </span>
+  </div>
+
+  <div class="w-full flex justify-center items-center" *ngIf="data.isUsed !== 'Yes'">
+    <button mat-raised-button (click)="markAsUsed()" color="primary">
+      Mark as Used
+    </button>
   </div>
 </div>
