@@ -33,9 +33,9 @@
             Create Ticket
           </button>
 
-          <button mat-fab extended color="warn" (click)="deleteAllTicket()">
-            <mat-icon>delete</mat-icon>
-            Delete All Tickets
+          <button mat-fab extended color="primary" (click)="exportToCsv()">
+            <mat-icon>download</mat-icon>
+            Download CSV
           </button>
 
           <div class="flex justify-center items-center flex-col border-2 rounded-xl p-2">
@@ -55,9 +55,14 @@
                 accept=".csv"
               />
             </label>
+
             <a href="https://drive.google.com/file/d/1GhJqTO4Vk69L0lWfM_vBuuUzCH8URpra/view?usp=sharing" target="_blank" class="text-[12px] hover:text-red-400">Download CSV Format</a>
           </div>
 
+          <button mat-fab extended color="warn" (click)="deleteAllTicket()">
+            <mat-icon>delete</mat-icon>
+            Delete All Tickets
+          </button>
         </div>
 
         <div class="flex items-center justify-end gap-3">

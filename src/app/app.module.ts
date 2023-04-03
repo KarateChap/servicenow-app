@@ -34,6 +34,8 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DeleteModalComponent } from './ticket/delete-modal/delete-modal.component';
+import { DatePipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -74,7 +76,7 @@ import { DeleteModalComponent } from './ticket/delete-modal/delete-modal.compone
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

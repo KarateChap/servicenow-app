@@ -83,8 +83,11 @@ export class TicketService {
         data.forEach((ticket) => {
           let receivedTimestamp = ticket['dateReceived'];
           let resolvedTimestamp = ticket['dateResolved'];
-          let receivedDate = receivedTimestamp.toDate();
+          let receivedDate: any;
           let resolvedDate: any;
+          if(receivedTimestamp !== null){
+            receivedDate = receivedTimestamp.toDate();
+          }
           if(resolvedTimestamp !== null){
             resolvedDate = resolvedTimestamp.toDate();
           }
@@ -110,10 +113,14 @@ export class TicketService {
 
           this.userTickets.push(newTicket);
         });
-
-        this.userTickets.sort((a, b) => b.dateReceived.getTime() - a.dateReceived.getTime());
-        this
-        this.ticketChanged.next(this.userTickets);
+          console.log(this.userTickets)
+          this.userTickets.sort((a, b) => {
+            if(a.dateReceived !== undefined && b.dateReceived !== undefined){
+              return b.dateReceived.getTime() - a.dateReceived.getTime()
+            }
+            return 0;
+          });
+          this.ticketChanged.next(this.userTickets);
       }
     );
   }

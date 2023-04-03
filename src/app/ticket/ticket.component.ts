@@ -15,6 +15,8 @@ import { AuthService } from '../shared/services/auth.service';
 import { TicketID } from '../shared/model/ticketId.model';
 import { NgxCsvParser } from 'ngx-csv-parser';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import * as Papa from 'papaparse';
+import { DatePipe } from '@angular/common';
 
 const NAMES: string[] = [];
 
@@ -57,7 +59,8 @@ export class TicketComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private matDialog: MatDialog,
     public authService: AuthService,
-    private ngxCsvParser: NgxCsvParser
+    private ngxCsvParser: NgxCsvParser,
+    private datePipe: DatePipe
   ) {
     this.dataSource = new MatTableDataSource(this.tickets);
   }
@@ -257,6 +260,41 @@ export class TicketComponent implements OnInit, OnDestroy {
   deleteAllTicket(){
     this.ticketService.allTicketsToDelete = this.tickets;
     this.matDialog.open(DeleteModalComponent);
+  }
+
+  exportToCsv(){
+    let ticketsToDownload: any[] = [];
+    this.tickets.forEach(element => {
+      let formattedDateReceived = this.datePipe.transform(element.dateReceived, 'MM-dd-yyyy');
+      let formattedDateResolved = this.datePipe.transform(element.dateResolved, 'MM-dd-yyyy');
+
+      ticketsToDownload.push({
+        id: element.id,
+        type: element.type,
+        dateReceived: formattedDateReceived,
+        dateResolved: formattedDateResolved,
+        isIt: element.isIt,
+        serviceModule: element.serviceModule,
+        deliveredToOrganization: element.deliveredToOrganization,
+        category: element.category,
+        impact: element.impact,
+        shortDescription: element.shortDescription,
+        status: element.status,
+        workingHours: element.workingHours,
+        isUsed: element.isUsed,
+      })
+    });
+    const csv = Papa.unparse(ticketsToDownload);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'data.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    ticketsToDownload = [];
   }
 
   ngOnDestroy() {
