@@ -331,7 +331,7 @@
               [matMenuTriggerFor]="isUsed"
               class="status cursor-pointer"
               [ngClass]="{ yes: row.isUsed === 'Yes', no: (row.isUsed === 'No' && row.workingHours > 0), na: (row.isUsed === 'No' && row.workingHours == 0)}"
-              >{{ row.workingHours == 0 ? 'N/A' : row.isUsed }}</span
+              >{{ row.isUsed }}</span
             >
             <mat-menu #isUsed="matMenu">
               <button mat-menu-item (click)="onIsUsedChanged(row, 'Yes')" [disabled]="row.workingHours == 0">
