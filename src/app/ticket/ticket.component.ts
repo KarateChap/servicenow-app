@@ -230,8 +230,8 @@ export class TicketComponent implements OnInit, OnDestroy {
           this.csvTickets.push({
             id: el['id'],
             type: el['type'],
-            dateReceived: el.receivedDate ? new Date(el.receivedDate) : null,
-            dateResolved: el.resolvedDate ? new Date(el.resolvedDate) : null,
+            dateReceived: el.dateReceived ? new Date(el.dateReceived) : null,
+            dateResolved: el.dateResolved ? new Date(el.dateResolved) : null,
             isIt: el['isIt'],
             serviceModule: el['serviceModule'],
             deliveredToOrganization: el['deliveredToOrganization'],
@@ -253,7 +253,6 @@ export class TicketComponent implements OnInit, OnDestroy {
           this.ticketService.addNewTicket(element);
         });
 
-        console.log(filteredTickets);
       });
   }
 
