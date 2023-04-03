@@ -89,7 +89,7 @@
     </span>
   </div>
 
-  <div class="w-full flex justify-center items-center" *ngIf="data.isUsed !== 'Yes'">
+  <div class="w-full flex justify-center items-center" *ngIf="data.isUsed !== 'Yes' && data.workingHours > 0">
     <button mat-raised-button (click)="markAsUsed()" color="primary">
       Mark as Used
     </button>

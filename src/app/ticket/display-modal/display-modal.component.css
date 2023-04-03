@@ -74,16 +74,21 @@
   background-color: #caffbf;
 }
 
+.na {
+  background-color: rgb(78, 78, 78);
+  color: white;
+}
+
 .low {
   background-color: #caffbf;
 }
 
 .medium {
-  background-color: #fb8b24;
+  background-color: #f15bb5;
 }
 
 .high {
-  background-color: #f15bb5;
+  background-color: #fb8b24;
   color: white;
 }
 

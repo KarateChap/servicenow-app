@@ -104,6 +104,19 @@ export class TicketComponent implements OnInit, OnDestroy {
     }
   }
 
+  onImpactChanged(row: TicketID, impact: string){
+    this.snackBar.open(
+      'Ticket Number: ' +
+        row.id +
+        ' has been changed to: ' +
+        impact,
+      'close',
+      { duration: 3000 }
+    );
+    this.ticketService.changeImpact(row.ticketId, impact);
+  }
+
+
   onIsUsedChanged(row: TicketID, isUsed: string) {
     this.snackBar.open(
       'Ticket Number: ' +

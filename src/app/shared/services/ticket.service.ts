@@ -29,6 +29,21 @@ export class TicketService {
 
   constructor(private apiService: ApiService, private firestore: Firestore) {}
 
+
+  changeImpact(ticketId: string, impact: string) {
+    const docInstance = doc(this.firestore, 'tickets', ticketId);
+    const updateData = {
+      impact: impact,
+    };
+    updateDoc(docInstance, updateData)
+      .then(() => {
+        console.log('Data Updated');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   changeIsUsed(ticketId: string, isUsed: string) {
     const docInstance = doc(this.firestore, 'tickets', ticketId);
     const updateData = {
