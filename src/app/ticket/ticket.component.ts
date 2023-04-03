@@ -284,7 +284,47 @@ export class TicketComponent implements OnInit, OnDestroy {
         isUsed: element.isUsed,
       })
     });
-    const csv = Papa.unparse(ticketsToDownload);
+    this.csvUnparse(ticketsToDownload);
+  }
+
+  downloadCsvFormat(){
+    let csvTicketFormat: any[] = [];
+    csvTicketFormat.push({
+      id: 'INC00000',
+      type: 'INCIDENT',
+      dateReceived: '4/3/2023',
+      dateResolved: '4/3/2023',
+      isIt: 'Zycus',
+      serviceModule: 'IContract',
+      deliveredToOrganization: 'DESIGN TO DELIVERY',
+      category: '',
+      impact: 'Low',
+      shortDescription: 'Description of the Ticket',
+      status: 'In Progress',
+      workingHours: '2',
+      isUsed: 'No',
+    })
+
+    csvTicketFormat.push({
+      id: 'ENC00000',
+      type: 'ENHANCEMENT',
+      dateReceived: '4/3/2023',
+      dateResolved: '4/3/2023',
+      isIt: 'Zycus',
+      serviceModule: 'IContract',
+      deliveredToOrganization: 'DESIGN TO DELIVERY',
+      category: 'Standard',
+      impact: 'High',
+      shortDescription: 'Description of the Ticket',
+      status: 'In Progress',
+      workingHours: '2',
+      isUsed: 'Yes',
+    })
+    this.csvUnparse(csvTicketFormat);
+  }
+
+  csvUnparse(ticket: any []){
+    const csv = Papa.unparse(ticket);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -294,7 +334,6 @@ export class TicketComponent implements OnInit, OnDestroy {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    ticketsToDownload = [];
   }
 
   ngOnDestroy() {
