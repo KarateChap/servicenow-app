@@ -170,7 +170,7 @@
 
         <ng-container matColumnDef="impact">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>IMPACT</th>
-          <td mat-cell *matCellDef="let row">
+          <td mat-cell *matCellDef="let row" class="scale-[90%] hover:scale-[100%] transition ease-in-out">
             <span
             [matMenuTriggerFor]="impact"
               class="status cursor-pointer"
@@ -196,21 +196,6 @@
                 Top
               </button>
             </mat-menu>
-
-            <!-- <span
-            [matMenuTriggerFor]="isUsed"
-            class="status cursor-pointer"
-            [ngClass]="{ yes: row.isUsed === 'Yes', no: (row.isUsed === 'No' && row.workingHours > 0), na: (row.isUsed === 'No' && row.workingHours == 0)}"
-            >{{ row.workingHours == 0 ? 'N/A' : row.isUsed }}</span
-          >
-          <mat-menu #isUsed="matMenu">
-            <button mat-menu-item (click)="onIsUsedChanged(row, 'Yes')" [disabled]="row.workingHours == 0">
-              Yes
-            </button>
-            <button mat-menu-item (click)="onIsUsedChanged(row, 'No')" [disabled]="row.workingHours == 0">
-              No
-            </button>
-          </mat-menu> -->
           </td>
         </ng-container>
 
