@@ -4,7 +4,7 @@
     <div class="flex w-full flex-row flex-wrap mb-10 justify-between">
 
       <div>
-        <p class="text-3xl font-bold" *ngIf="authService.username">Hi, {{authService.username}}!</p>
+        <p class="text-2xl font-bold" *ngIf="authService.username">Hi, {{authService.username}}!</p>
       </div>
 
       <div class="flex justify-center md:justify-end gap-5 flex-row flex-wrap">
@@ -14,13 +14,13 @@
               <mat-chip-option
                 (click)="filterTicket('')"
                 color="accent"
-                class="font-bold"
+                class="font-bold text-[11px]"
                 >All</mat-chip-option
               >
-              <mat-chip-option (click)="filterTicket('INCIDENT')" color="accent"
+              <mat-chip-option (click)="filterTicket('INCIDENT')" color="accent" class="text-[11px]"
                 >Incidents</mat-chip-option
               >
-              <mat-chip-option (click)="filterTicket('ENHANCEMENT')" color="accent"
+              <mat-chip-option (click)="filterTicket('ENHANCEMENT')" color="accent" class="text-[11px]"
                 >Enhancements</mat-chip-option
               >
             </mat-chip-listbox>
@@ -28,20 +28,25 @@
         </div>
 
         <div class="flex justify-center items-center gap-5 border-2 rounded-xl p-3 flex-wrap">
-          <button mat-fab extended color="primary" (click)="addNewTicket()">
+          <button mat-fab extended color="primary" (click)="addNewTicket()" class="text-[11px]">
             <mat-icon>add</mat-icon>
             Create Ticket
           </button>
 
-          <button mat-fab extended color="primary" (click)="exportToCsv()">
+          <button mat-fab extended color="primary" (click)="exportToCsv()" class="text-[11px]">
             <mat-icon>download</mat-icon>
             Download CSV
+          </button>
+
+          <button mat-fab extended color="warn" (click)="deleteAllTicket()" class="text-[11px]">
+            <mat-icon>delete</mat-icon>
+            Delete All Tickets
           </button>
 
           <div class="flex justify-center items-center flex-col border-2 rounded-xl p-2">
             <label>
               <div
-                class="!bg-[#3f51b5] flex justify-center items-center gap-3 text-sm tracking-wider font-bold text-white py-3 px-4 pr-5 shadow-md rounded-full hover:opacity-[90%] cursor-pointer"
+                class="!bg-[#3f51b5] flex justify-center items-center gap-3 text-[11px] tracking-wider font-bold text-white py-3 px-4 pr-5 shadow-md rounded-full hover:opacity-[90%] cursor-pointer"
               >
               <mat-icon>upload</mat-icon>
                 Upload CSV
@@ -56,18 +61,13 @@
               />
             </label>
 
-            <p class="text-[12px] hover:text-red-400 cursor-pointer" (click)="downloadCsvFormat()">Download CSV Format</p>
+            <p class="text-[10px] hover:text-red-400 cursor-pointer" (click)="downloadCsvFormat()">Download CSV Format</p>
           </div>
-
-          <button mat-fab extended color="warn" (click)="deleteAllTicket()">
-            <mat-icon>delete</mat-icon>
-            Delete All Tickets
-          </button>
         </div>
 
         <div class="flex items-center justify-end gap-3">
-          <span class="sm:text-xl md:text-2xl font-bold pt-1">Available Hours:</span>
-          <button mat-fab extended color="primary">
+          <span class="sm:text-lg font-bold pt-1">Available Hours:</span>
+          <button mat-fab extended color="primary" class="text-[13px]">
             <mat-icon>schedule</mat-icon>
             {{ getSumOfCountedValues() }}
           </button>
