@@ -82,10 +82,10 @@
 
   <div class="w-full justify-center text-center mb-5">
     <span>
-      Received: <span class="font-bold">{{ data.dateReceived | date }}</span>
+      Received: <span class="font-bold">{{ data.dateReceived ? (data.dateReceived | date) : 'N/A' }}</span>
     </span>
     <span>
-      Resolved: <span class="font-bold">{{ data.dateResolved | date }}</span>
+      Resolved: <span class="font-bold">{{ data.dateResolved ? (data.dateResolved | date) : 'N/A' }}</span>
     </span>
   </div>
 
