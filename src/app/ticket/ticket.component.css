@@ -21,6 +21,7 @@ th {
   padding: 5px 10px;
   border-radius: 5px;
   letter-spacing: 0.1em;
+  font-weight: bold;
 }
 
 .in-progress {
