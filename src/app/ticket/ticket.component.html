@@ -1,10 +1,10 @@
 <div class="flex flex-col py-10 w-full px-5">
   <div class="w-[90vw] flex flex-col items-center justify-center">
-
     <div class="flex w-full flex-row flex-wrap mb-10 justify-between">
-
       <div>
-        <p class="text-2xl font-bold" *ngIf="authService.username">Hi, {{authService.username}}!</p>
+        <p class="text-2xl font-bold" *ngIf="authService.username">
+          Hi, {{ authService.username }}!
+        </p>
       </div>
 
       <div class="flex justify-center md:justify-end gap-5 flex-row flex-wrap">
@@ -20,14 +20,18 @@
               <mat-chip-option (click)="filterTicket('INCIDENT')" color="accent"
                 >Incidents</mat-chip-option
               >
-              <mat-chip-option (click)="filterTicket('ENHANCEMENT')" color="accent"
+              <mat-chip-option
+                (click)="filterTicket('ENHANCEMENT')"
+                color="accent"
                 >Enhancements</mat-chip-option
               >
             </mat-chip-listbox>
           </div>
         </div>
 
-        <div class="flex justify-center items-center gap-2 border-2 rounded-xl p-2 flex-wrap">
+        <div
+          class="flex justify-center items-center gap-2 border-2 rounded-xl p-2 flex-wrap"
+        >
           <button mat-fab extended color="primary" (click)="addNewTicket()">
             <mat-icon>add</mat-icon>
             Add New
@@ -43,12 +47,14 @@
             Delete All
           </button>
 
-          <div class="flex justify-center items-center flex-col border-2 rounded-xl p-2">
+          <div
+            class="flex justify-center items-center flex-col border-2 rounded-xl p-2"
+          >
             <label>
               <div
                 class="!bg-[#3f51b5] flex justify-center items-center gap-3 text-sm tracking-wider font-bold text-white py-3 px-4 pr-5 shadow-md rounded-full hover:opacity-[90%] cursor-pointer"
               >
-              <mat-icon>upload</mat-icon>
+                <mat-icon>upload</mat-icon>
                 Upload CSV
               </div>
               <input
@@ -61,7 +67,12 @@
               />
             </label>
 
-            <p class="text-[10px] hover:text-red-400 cursor-pointer" (click)="downloadCsvFormat()">Download CSV Format</p>
+            <p
+              class="text-[10px] hover:text-red-400 cursor-pointer"
+              (click)="downloadCsvFormat()"
+            >
+              Download CSV Format
+            </p>
           </div>
         </div>
 
@@ -73,10 +84,6 @@
           </button>
         </div>
       </div>
-
-
-
-
     </div>
 
     <div class="flex items-start w-full">
@@ -94,7 +101,6 @@
     </div>
 
     <div class="mat-elevation-z8 w-full overflow-x-scroll">
-
       <table mat-table [dataSource]="dataSource" matSort class="mt-5">
         <ng-container matColumnDef="id" sticky>
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -172,7 +178,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>IMPACT</th>
           <td mat-cell *matCellDef="let row">
             <span
-            [matMenuTriggerFor]="impact"
+              [matMenuTriggerFor]="impact"
               class="status cursor-pointer"
               [ngClass]="{
                 low: row.impact === 'Low',
@@ -277,11 +283,8 @@
               <button mat-menu-item (click)="onStatusChanged(row, 'Closed')">
                 Closed
               </button>
-              <button
-                mat-menu-item
-                (click)="onStatusChanged(row, 'Waiting For')"
-              >
-                Waiting For
+              <button mat-menu-item (click)="onStatusChanged(row, 'Submitted')">
+                Submitted
               </button>
               <button mat-menu-item (click)="onStatusChanged(row, 'Accepted')">
                 Accepted
@@ -312,7 +315,9 @@
         </ng-container>
 
         <ng-container matColumnDef="workingHours">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>WORKING HOURS</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            WORKING HOURS
+          </th>
           <td mat-cell *matCellDef="let row">
             {{ row.workingHours ? row.workingHours : "N/A" }}
           </td>
@@ -330,14 +335,26 @@
             <span
               [matMenuTriggerFor]="isUsed"
               class="status cursor-pointer"
-              [ngClass]="{ yes: row.isUsed === 'Yes', no: (row.isUsed === 'No' && row.workingHours > 0), na: (row.isUsed === 'No' && row.workingHours == 0)}"
+              [ngClass]="{
+                yes: row.isUsed === 'Yes',
+                no: row.isUsed === 'No' && row.workingHours > 0,
+                na: row.isUsed === 'No' && row.workingHours == 0
+              }"
               >{{ row.isUsed }}</span
             >
             <mat-menu #isUsed="matMenu">
-              <button mat-menu-item (click)="onIsUsedChanged(row, 'Yes')" [disabled]="row.workingHours == 0">
+              <button
+                mat-menu-item
+                (click)="onIsUsedChanged(row, 'Yes')"
+                [disabled]="row.workingHours == 0"
+              >
                 Yes
               </button>
-              <button mat-menu-item (click)="onIsUsedChanged(row, 'No')" [disabled]="row.workingHours == 0">
+              <button
+                mat-menu-item
+                (click)="onIsUsedChanged(row, 'No')"
+                [disabled]="row.workingHours == 0"
+              >
                 No
               </button>
             </mat-menu>
@@ -369,7 +386,9 @@
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell" colspan="15">
             <div class="mt-5 w-full p-5">
-              <p class="text-xl p-2 border-2 rounded-md">No Data Found. Please Add ticket/s first</p>
+              <p class="text-xl p-2 border-2 rounded-md">
+                No Data Found. Please Add ticket/s first
+              </p>
             </div>
           </td>
         </tr>
